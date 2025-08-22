@@ -27,15 +27,14 @@ public class Player : MonoBehaviour
         {
             // Set the movement direction from the input vector.
             moveDir = new Vector3(inputVect.x, 0, inputVect.y);
-
+            moveDistance = moveSpeed * Time.deltaTime;
             isWalking = true;
         }
         else
         {
             //explicitly setting the direction to zero.
             moveDir = Vector3.zero;
-
-            moveDistance = moveSpeed * Time.deltaTime; 
+            moveDistance = 0f;
             isWalking = false;
         }
 
@@ -45,7 +44,7 @@ public class Player : MonoBehaviour
 
         if (!canMove)
         {
-            Vector3 moveDirX = new Vector3(moveDir.x, 0, 0);
+            Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
             canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDistance);
             if (canMove)
             {
@@ -53,7 +52,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                Vector3 moveDirZ = new Vector3(0, 0, moveDir.z);
+                Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
                 canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
                 if (canMove)
                 {
